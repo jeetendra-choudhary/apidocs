@@ -1,0 +1,187 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This classes API",
+    "version": "1.0.0",
+    "title": "Classes API List",
+    "contact": {
+      "email": "jeetendra.choudhary@appswise.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "admins",
+      "description": "Secured Admin-only calls"
+    },
+    {
+      "name": "developers",
+      "description": "Operations available to regular developers"
+    }
+  ],
+  "paths": {
+    "/class-management/classes": {
+      "get": {
+        "tags": [
+          "developers"
+        ],
+        "summary": "searches classes",
+        "description": "By passing in the appropriate options, you can search for\navailable classes in the system\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "pass an optional page number for pagination",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "loc_id",
+            "description": "pass an location id number for to get classes of that locations",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          {
+            "in": "query",
+            "name": "skip",
+            "description": "number of records to skip for pagination",
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "maximum number of records to return",
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "maximum": 50
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "JWT access token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Class"
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admins"
+        ],
+        "summary": "adds  item",
+        "operationId": "add",
+        "description": "Adds an item to the system",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "inventoryItem",
+            "description": "Inventory item to add",
+            "schema": {
+              "$ref": "#/definitions/Class"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Class": {
+      "type": "object",
+      "required": [
+        "title",
+        "classDescription",
+        "status",
+        "memberFee",
+        "nonMemberFee",
+        "loc_id"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Orientation for Isaac V3.0"
+        },
+        "classDescription": {
+          "type": "string",
+          "example": "Introductio of Isaac V3.0 Class Features"
+        },
+        "status": {
+          "type": "string",
+          "example": "Introductio of Isaac V3.0 Class Features"
+        },
+        "memberFee": {
+          "type": "number",
+          "example": 100
+        },
+        "nonMemberFee": {
+          "type": "number",
+          "example": 100
+        },
+        "loc_id": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "bearerAuth": {
+      "name": "Authorization",
+      "in": "header",
+      "type": "apiKey",
+      "description": "JWT Authorization header"
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "host": "virtserver.swaggerhub.com",
+  "basePath": "/jeetendra-choudhary/Classes/1.0.0"
+}
